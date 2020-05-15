@@ -13,4 +13,9 @@ public class AyUser {
     private String ayuPhone;
 
     private Date ayuUpdateTime;
+
+    public AyUser(String ayuName, String ayuPhone) {
+        this.ayuName = ayuName;
+        this.ayuPhone = ayuPhone;
+    }
 }

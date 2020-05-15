@@ -1,63 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
-	<title>澳亚工艺系统配置</title>
-	<script type="text/javascript" src="js/vue.min.js"></script>
-	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <meta charset="utf-8"/>
+    <title>澳亚工艺系统配置</title>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 </head>
 <body>
 
 <h1 align="center">生成二维码 </h1>
 <table>
-	<tr>
-		<td>工艺单单名</td>
-		<td><input type="text" name="name" id="name"></td>
-	</tr>
-	<tr>
-		<td>工艺单图片</td>
-		<td><input type="file" name="file" id="fileId"></td>
-	</tr>
-	<tr>
-		<td>
-			<button onclick="add()">添加</button>
-		</td>
-	</tr>
-	<img id="preview_photo" src="" width="200px" height="200px">
-	<style>
-		img[src=""],img:not([src]){
-			opacity:0;
-		}
-	</style>
+    <tr>
+        <td>工艺单单名</td>
+        <td><input type="text" name="name" id="name"></td>
+    </tr>
+    <tr>
+        <td>工艺单图片</td>
+        <td><input type="file" name="file" id="fileId" accept="image/*" onchange="showImg(this)"></td>
+    </tr>
+    <tr>
+        <td>
+            <button onclick="add()">添加</button>
+        </td>
+    </tr>
+    <div id="addUrl">
+        <img src="" alt="" id="img" width="200px" height="200px">
+        <img id="preview_photo" src="" width="200px" height="200px">
+    </div>
+    <style>
+        img[src=""], img:not([src]) {
+            opacity: 0;
+        }
+    </style>
 </table>
 
 
 <script>
-	function add() {
-		if ($("#name").val() == '' || $("#name").val() == null) {
-			alert("工艺单单名不能为空")
-			return;
-		}
-		if ($("#fileId").val() == '' || $("#fileId").val() == null) {
-			alert("图片不能为空")
-			return;
-		}
-		var formData = new FormData();
-		formData.append('file', $('#fileId')[0].files[0]);  //添加图片信息的参数
-		formData.append("name", $("#name").val());
-		$.ajax({
-			url: "../code/add/" + $("#name").val(),
-			type: "post",
-			dataType: "json",
-			cache: false,
-			data: formData,
-			processData: false,// 不处理数据
-			contentType: false, // 不设置内容类型
-			success: function (data) {
-				//$("#preview_photo").attr("src", );
-			}
-		})
-	}
+    function showImg(obj) {
+        var file = $(obj)[0].files[0];    //获取文件信息
+        var imgdata = '';
+        if (file) {
+            var reader = new FileReader();  //调用FileReader
+            reader.readAsDataURL(file); //将文件读取为 DataURL(base64)
+            reader.onload = function (evt) {   //读取操作完成时触发。
+                $("#img").attr('src', evt.target.result)  //将img标签的src绑定为DataURL
+            };
+        } else {
+            alert("上传失败");
+        }
+    }
+
+    function add() {
+        if ($("#name").val() == '' || $("#name").val() == null) {
+            alert("工艺单单名不能为空")
+            return;
+        }
+        if ($("#fileId").val() == '' || $("#fileId").val() == null) {
+            alert("图片不能为空")
+            return;
+        }
+        var formData = new FormData();
+        formData.append('file', $('#fileId')[0].files[0]);  //添加图片信息的参数
+        formData.append("name", $("#name").val());
+        $.ajax({
+            url: "../code/add/" + $("#name").val(),
+            type: "post",
+            dataType: "json",
+            cache: false,
+            data: formData,
+            processData: false,// 不处理数据
+            contentType: false, // 不设置内容类型
+            success: function (data) {
+                $("#preview_photo").attr("src", data.filepath);
+                $("#addUrl").append("<a href='../code/downImg/"+data.id+ "/code"+ data.filename+ " '>将二维码保存本地</a>")
+            }
+        })
+    }
 </script>
 </body>
 </html>

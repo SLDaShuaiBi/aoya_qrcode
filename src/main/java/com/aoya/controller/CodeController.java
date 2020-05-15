@@ -2,6 +2,8 @@ package com.aoya.controller;
 
 import com.aoya.domain.AyCode;
 import com.aoya.mapper.AyCodeMapper;
+import com.aoya.service.UserService;
+import com.aoya.util.Result;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -9,17 +11,19 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,11 +40,21 @@ public class CodeController {
     @Autowired
     AyCodeMapper ayCodeMapper;
 
+    @Autowired
+    UserService userService;
+
+    @Value("${file.uploadFolder}")
+    private String imgSavePath;
+    @Value("${file.staticAccessPath}")
+    private String staticAccessPath;
+    @Value("${file.viewPath}")
+    private String viewPath;
+
     @PostMapping("/code/add/{name}")
     @Transactional
     public Map<String, String> add(@PathVariable("name") String name, MultipartFile file, HttpServletRequest request) {
         Map<String, String> ret = new HashMap<String, String>();
-        String imgSavePath = "E:/images/upload/";
+        //String imgSavePath = "/images/upload/";
         if (file == null) {
             ret.put("type", "error");
             ret.put("msg", "选择要上传的文件！");
@@ -92,14 +106,21 @@ public class CodeController {
         }
         ret.put("type", "success");
         ret.put("msg", "上传图片成功！");
-        ret.put("filepath", orgImgSavePath);
+        ret.put("filepath", viewPath + id + "/code" + filename);
         ret.put("filename", filename);
+        ret.put("id", id.toString());
         return ret;
     }
 
-    @GetMapping("/view")
-    public ModelAndView view() {
-        return new ModelAndView("code");
+    @GetMapping("/queryImgById/{id}/{phone}")
+    public Result queryImgById(@PathVariable("id") int id, @PathVariable("phone") String phone) {
+        return userService.queryImgById(id, phone);
+    }
+
+    @GetMapping("/addUser")
+    public Result addUser(@RequestParam("name") String name,
+                          @RequestParam("phone") String phone) {
+        return userService.insert(name, phone);
     }
 
     private boolean orCode(String content, String path) {
@@ -132,14 +153,35 @@ public class CodeController {
         }
     }
 
-    public static void main(String[] args) {
-        File savePathFile = new File("F:\\aoya");
-        if (!savePathFile.exists()) {
-            savePathFile.mkdir();
-            System.out.println("创建文件夹");
-        } else {
-            System.out.println("baibai");
+    @GetMapping("/code/downImg/{id}/{img}")
+    public void downImg(HttpServletResponse response, @PathVariable("id") int id, @PathVariable("img") String img) {
+
+
+        ///////////
+        System.out.println(id + img);
+        System.out.println(System.currentTimeMillis());
+        try {
+            String filename = img;
+//当文件名不是英文名的时候，最好使用url解码器去编码一下，
+            filename = URLEncoder.encode(filename, "UTF-8");
+//将响应的类型设置为图片
+            response.setContentType("image/jpeg");
+            response.setHeader("Content - Disposition", "attachment; filename =" + filename);
+            File file = new File(imgSavePath + id + "/" + filename);
+            FileInputStream fileInputStream = new FileInputStream(file);
+            OutputStream out = response.getOutputStream();
+            int len = 0;
+            byte[] by = new byte[1024 * 10];
+            while ((len = fileInputStream.read(by)) > 0) {
+                out.write(by, 0, len);
+            }
+            out.close();
+            fileInputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
+
+
 }

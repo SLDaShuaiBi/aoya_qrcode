@@ -3,6 +3,8 @@ package com.aoya.mapper;
 import com.aoya.domain.AyCode;
 import com.aoya.domain.AyUser;
 
+import java.util.Map;
+
 
 public interface AyUserMapper {
     int deleteByPrimaryKey(Integer ayuId);
@@ -11,9 +13,11 @@ public interface AyUserMapper {
 
     int insertSelective(AyUser record);
 
-    AyCode selectByPrimaryKey(Integer ayuId);
+    AyUser selectByPrimaryKey(Integer ayuId);
 
     int updateByPrimaryKeySelective(AyUser record);
 
     int updateByPrimaryKey(AyUser record);
+
+    int selectUserByPhone(String phone);
 }

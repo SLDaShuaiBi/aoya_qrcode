@@ -20,11 +20,11 @@
     delete from ay_user
     where ayu_id = #{ayuId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.aoya.domain.AyCode" >
+  <insert id="insert" parameterType="com.aoya.domain.AyUser" >
     insert into ay_user (ayu_id, ayu_name, ayu_phone,ayu_update_time)
     values (#{ayuId,jdbcType=INTEGER}, #{ayuName,jdbcType=VARCHAR}, #{ayuPhone,jdbcType=VARCHAR}, #{ayuUpdateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.aoya.domain.AyCode" >
+  <insert id="insertSelective" parameterType="com.aoya.domain.AyUser" >
     insert into ay_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="ayuId != null" >
@@ -55,7 +55,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.aoya.domain.AyCode" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.aoya.domain.AyUser" >
     update ay_user
     <set >
       <if test="ayuName != null" >
@@ -70,11 +70,14 @@
     </set>
     where ayu_id = #{ayuId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.aoya.domain.AyCode" >
+  <update id="updateByPrimaryKey" parameterType="com.aoya.domain.AyUser" >
     update ay_user
     set ayu_name = #{ayuName,jdbcType=VARCHAR},
       ayu_phone = #{ayuPhone,jdbcType=VARCHAR},
       ayu_update_time = #{ayuUpdateTime,jdbcType=TIMESTAMP}
     where ayu_id = #{ayuId,jdbcType=INTEGER}
   </update>
+  <select id="selectUserByPhone" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(*) from ay_user where ayu_phone = #{phone}
+  </select>
 </mapper>
