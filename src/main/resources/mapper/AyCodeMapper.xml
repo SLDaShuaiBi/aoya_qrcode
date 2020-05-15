@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aoya.mapper.AyCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.aoya.domain.AyCode" >
+    <id column="ayc_id" property="aycId" jdbcType="INTEGER" />
+    <result column="ayc_name" property="aycName" jdbcType="VARCHAR" />
+    <result column="ayc_img_url" property="aycImgUrl" jdbcType="VARCHAR" />
+    <result column="ayc_code_url" property="aycCodeUrl" jdbcType="VARCHAR" />
+    <result column="ayc_update_time" property="aycUpdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ayc_id, ayc_name, ayc_img_url, ayc_code_url, ayc_update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ay_code
+    where ayc_id = #{aycId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ay_code
+    where ayc_id = #{aycId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aoya.domain.AyCode" >
+    insert into ay_code (ayc_id, ayc_name, ayc_img_url, 
+      ayc_code_url, ayc_update_time)
+    values (#{aycId,jdbcType=INTEGER}, #{aycName,jdbcType=VARCHAR}, #{aycImgUrl,jdbcType=VARCHAR}, 
+      #{aycCodeUrl,jdbcType=VARCHAR}, #{aycUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aoya.domain.AyCode" >
+    insert into ay_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="aycId != null" >
+        ayc_id,
+      </if>
+      <if test="aycName != null" >
+        ayc_name,
+      </if>
+      <if test="aycImgUrl != null" >
+        ayc_img_url,
+      </if>
+      <if test="aycCodeUrl != null" >
+        ayc_code_url,
+      </if>
+      <if test="aycUpdateTime != null" >
+        ayc_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="aycId != null" >
+        #{aycId,jdbcType=INTEGER},
+      </if>
+      <if test="aycName != null" >
+        #{aycName,jdbcType=VARCHAR},
+      </if>
+      <if test="aycImgUrl != null" >
+        #{aycImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="aycCodeUrl != null" >
+        #{aycCodeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="aycUpdateTime != null" >
+        #{aycUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aoya.domain.AyCode" >
+    update ay_code
+    <set >
+      <if test="aycName != null" >
+        ayc_name = #{aycName,jdbcType=VARCHAR},
+      </if>
+      <if test="aycImgUrl != null" >
+        ayc_img_url = #{aycImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="aycCodeUrl != null" >
+        ayc_code_url = #{aycCodeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="aycUpdateTime != null" >
+        ayc_update_time = #{aycUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ayc_id = #{aycId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aoya.domain.AyCode" >
+    update ay_code
+    set ayc_name = #{aycName,jdbcType=VARCHAR},
+      ayc_img_url = #{aycImgUrl,jdbcType=VARCHAR},
+      ayc_code_url = #{aycCodeUrl,jdbcType=VARCHAR},
+      ayc_update_time = #{aycUpdateTime,jdbcType=TIMESTAMP}
+    where ayc_id = #{aycId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aoya.mapper.AyUserMapper">
+  <resultMap id="BaseResultMap" type="com.aoya.domain.AyUser">
+    <id column="ayu_id" jdbcType="INTEGER" property="ayuId" />
+    <result column="ayu_number" jdbcType="CHAR" property="ayuNumber" />
+    <result column="ayu_name" jdbcType="CHAR" property="ayuName" />
+    <result column="ayu_dept" jdbcType="CHAR" property="ayuDept" />
+    <result column="ayu_sex" jdbcType="CHAR" property="ayuSex" />
+    <result column="ayu_position" jdbcType="CHAR" property="ayuPosition" />
+    <result column="ayu_cardid" jdbcType="CHAR" property="ayuCardid" />
+    <result column="ayu_phone1" jdbcType="CHAR" property="ayuPhone1" />
+    <result column="ayu_phone2" jdbcType="CHAR" property="ayuPhone2" />
+    <result column="ayu_entrytime" jdbcType="CHAR" property="ayuEntrytime" />
+    <result column="ayu_dimission" jdbcType="CHAR" property="ayuDimission" />
+    <result column="ayu_slotcard" jdbcType="CHAR" property="ayuSlotcard" />
+    <result column="ayu_mainclass" jdbcType="CHAR" property="ayuMainclass" />
+    <result column="ayu_aydeid" jdbcType="INTEGER" property="ayuAydeid" />
+    <result column="ayu_ayrid" jdbcType="INTEGER" property="ayuAyrid" />
+    <result column="ayu_remark" jdbcType="VARCHAR" property="ayuRemark" />
+    <result column="ayu_iccardnum" jdbcType="VARCHAR" property="ayuIccardnum" />
+    <result column="ayu_plaintextpwd" jdbcType="VARCHAR" property="ayuPlaintextpwd" />
+    <result column="ayu_ciphertextpwd" jdbcType="VARCHAR" property="ayuCiphertextpwd" />
+    <result column="ayu_abandon" jdbcType="INTEGER" property="ayuAbandon" />
+    <result column="ayu_updatetime" jdbcType="TIMESTAMP" property="ayuUpdatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ayu_id, ayu_number, ayu_name, ayu_dept, ayu_sex, ayu_position, ayu_cardid, ayu_phone1, 
+    ayu_phone2, ayu_entrytime, ayu_dimission, ayu_slotcard, ayu_mainclass, ayu_aydeid, 
+    ayu_ayrid, ayu_remark, ayu_iccardnum, ayu_plaintextpwd, ayu_ciphertextpwd, ayu_abandon, 
+    ayu_updatetime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ay_user
+    where ayu_id = #{ayuId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ay_user
+    where ayu_id = #{ayuId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aoya.domain.AyUser">
+    insert into ay_user (ayu_id, ayu_number, ayu_name, 
+      ayu_dept, ayu_sex, ayu_position, 
+      ayu_cardid, ayu_phone1, ayu_phone2, 
+      ayu_entrytime, ayu_dimission, ayu_slotcard, 
+      ayu_mainclass, ayu_aydeid, ayu_ayrid, 
+      ayu_remark, ayu_iccardnum, ayu_plaintextpwd, 
+      ayu_ciphertextpwd, ayu_abandon, ayu_updatetime
+      )
+    values (#{ayuId,jdbcType=INTEGER}, #{ayuNumber,jdbcType=CHAR}, #{ayuName,jdbcType=CHAR}, 
+      #{ayuDept,jdbcType=CHAR}, #{ayuSex,jdbcType=CHAR}, #{ayuPosition,jdbcType=CHAR}, 
+      #{ayuCardid,jdbcType=CHAR}, #{ayuPhone1,jdbcType=CHAR}, #{ayuPhone2,jdbcType=CHAR}, 
+      #{ayuEntrytime,jdbcType=CHAR}, #{ayuDimission,jdbcType=CHAR}, #{ayuSlotcard,jdbcType=CHAR}, 
+      #{ayuMainclass,jdbcType=CHAR}, #{ayuAydeid,jdbcType=INTEGER}, #{ayuAyrid,jdbcType=INTEGER}, 
+      #{ayuRemark,jdbcType=VARCHAR}, #{ayuIccardnum,jdbcType=VARCHAR}, #{ayuPlaintextpwd,jdbcType=VARCHAR}, 
+      #{ayuCiphertextpwd,jdbcType=VARCHAR}, #{ayuAbandon,jdbcType=INTEGER}, #{ayuUpdatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.aoya.domain.AyUser">
+    insert into ay_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ayuId != null">
+        ayu_id,
+      </if>
+      <if test="ayuNumber != null">
+        ayu_number,
+      </if>
+      <if test="ayuName != null">
+        ayu_name,
+      </if>
+      <if test="ayuDept != null">
+        ayu_dept,
+      </if>
+      <if test="ayuSex != null">
+        ayu_sex,
+      </if>
+      <if test="ayuPosition != null">
+        ayu_position,
+      </if>
+      <if test="ayuCardid != null">
+        ayu_cardid,
+      </if>
+      <if test="ayuPhone1 != null">
+        ayu_phone1,
+      </if>
+      <if test="ayuPhone2 != null">
+        ayu_phone2,
+      </if>
+      <if test="ayuEntrytime != null">
+        ayu_entrytime,
+      </if>
+      <if test="ayuDimission != null">
+        ayu_dimission,
+      </if>
+      <if test="ayuSlotcard != null">
+        ayu_slotcard,
+      </if>
+      <if test="ayuMainclass != null">
+        ayu_mainclass,
+      </if>
+      <if test="ayuAydeid != null">
+        ayu_aydeid,
+      </if>
+      <if test="ayuAyrid != null">
+        ayu_ayrid,
+      </if>
+      <if test="ayuRemark != null">
+        ayu_remark,
+      </if>
+      <if test="ayuIccardnum != null">
+        ayu_iccardnum,
+      </if>
+      <if test="ayuPlaintextpwd != null">
+        ayu_plaintextpwd,
+      </if>
+      <if test="ayuCiphertextpwd != null">
+        ayu_ciphertextpwd,
+      </if>
+      <if test="ayuAbandon != null">
+        ayu_abandon,
+      </if>
+      <if test="ayuUpdatetime != null">
+        ayu_updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ayuId != null">
+        #{ayuId,jdbcType=INTEGER},
+      </if>
+      <if test="ayuNumber != null">
+        #{ayuNumber,jdbcType=CHAR},
+      </if>
+      <if test="ayuName != null">
+        #{ayuName,jdbcType=CHAR},
+      </if>
+      <if test="ayuDept != null">
+        #{ayuDept,jdbcType=CHAR},
+      </if>
+      <if test="ayuSex != null">
+        #{ayuSex,jdbcType=CHAR},
+      </if>
+      <if test="ayuPosition != null">
+        #{ayuPosition,jdbcType=CHAR},
+      </if>
+      <if test="ayuCardid != null">
+        #{ayuCardid,jdbcType=CHAR},
+      </if>
+      <if test="ayuPhone1 != null">
+        #{ayuPhone1,jdbcType=CHAR},
+      </if>
+      <if test="ayuPhone2 != null">
+        #{ayuPhone2,jdbcType=CHAR},
+      </if>
+      <if test="ayuEntrytime != null">
+        #{ayuEntrytime,jdbcType=CHAR},
+      </if>
+      <if test="ayuDimission != null">
+        #{ayuDimission,jdbcType=CHAR},
+      </if>
+      <if test="ayuSlotcard != null">
+        #{ayuSlotcard,jdbcType=CHAR},
+      </if>
+      <if test="ayuMainclass != null">
+        #{ayuMainclass,jdbcType=CHAR},
+      </if>
+      <if test="ayuAydeid != null">
+        #{ayuAydeid,jdbcType=INTEGER},
+      </if>
+      <if test="ayuAyrid != null">
+        #{ayuAyrid,jdbcType=INTEGER},
+      </if>
+      <if test="ayuRemark != null">
+        #{ayuRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="ayuIccardnum != null">
+        #{ayuIccardnum,jdbcType=VARCHAR},
+      </if>
+      <if test="ayuPlaintextpwd != null">
+        #{ayuPlaintextpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="ayuCiphertextpwd != null">
+        #{ayuCiphertextpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="ayuAbandon != null">
+        #{ayuAbandon,jdbcType=INTEGER},
+      </if>
+      <if test="ayuUpdatetime != null">
+        #{ayuUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aoya.domain.AyUser">
+    update ay_user
+    <set>
+      <if test="ayuNumber != null">
+        ayu_number = #{ayuNumber,jdbcType=CHAR},
+      </if>
+      <if test="ayuName != null">
+        ayu_name = #{ayuName,jdbcType=CHAR},
+      </if>
+      <if test="ayuDept != null">
+        ayu_dept = #{ayuDept,jdbcType=CHAR},
+      </if>
+      <if test="ayuSex != null">
+        ayu_sex = #{ayuSex,jdbcType=CHAR},
+      </if>
+      <if test="ayuPosition != null">
+        ayu_position = #{ayuPosition,jdbcType=CHAR},
+      </if>
+      <if test="ayuCardid != null">
+        ayu_cardid = #{ayuCardid,jdbcType=CHAR},
+      </if>
+      <if test="ayuPhone1 != null">
+        ayu_phone1 = #{ayuPhone1,jdbcType=CHAR},
+      </if>
+      <if test="ayuPhone2 != null">
+        ayu_phone2 = #{ayuPhone2,jdbcType=CHAR},
+      </if>
+      <if test="ayuEntrytime != null">
+        ayu_entrytime = #{ayuEntrytime,jdbcType=CHAR},
+      </if>
+      <if test="ayuDimission != null">
+        ayu_dimission = #{ayuDimission,jdbcType=CHAR},
+      </if>
+      <if test="ayuSlotcard != null">
+        ayu_slotcard = #{ayuSlotcard,jdbcType=CHAR},
+      </if>
+      <if test="ayuMainclass != null">
+        ayu_mainclass = #{ayuMainclass,jdbcType=CHAR},
+      </if>
+      <if test="ayuAydeid != null">
+        ayu_aydeid = #{ayuAydeid,jdbcType=INTEGER},
+      </if>
+      <if test="ayuAyrid != null">
+        ayu_ayrid = #{ayuAyrid,jdbcType=INTEGER},
+      </if>
+      <if test="ayuRemark != null">
+        ayu_remark = #{ayuRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="ayuIccardnum != null">
+        ayu_iccardnum = #{ayuIccardnum,jdbcType=VARCHAR},
+      </if>
+      <if test="ayuPlaintextpwd != null">
+        ayu_plaintextpwd = #{ayuPlaintextpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="ayuCiphertextpwd != null">
+        ayu_ciphertextpwd = #{ayuCiphertextpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="ayuAbandon != null">
+        ayu_abandon = #{ayuAbandon,jdbcType=INTEGER},
+      </if>
+      <if test="ayuUpdatetime != null">
+        ayu_updatetime = #{ayuUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ayu_id = #{ayuId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aoya.domain.AyUser">
+    update ay_user
+    set ayu_number = #{ayuNumber,jdbcType=CHAR},
+      ayu_name = #{ayuName,jdbcType=CHAR},
+      ayu_dept = #{ayuDept,jdbcType=CHAR},
+      ayu_sex = #{ayuSex,jdbcType=CHAR},
+      ayu_position = #{ayuPosition,jdbcType=CHAR},
+      ayu_cardid = #{ayuCardid,jdbcType=CHAR},
+      ayu_phone1 = #{ayuPhone1,jdbcType=CHAR},
+      ayu_phone2 = #{ayuPhone2,jdbcType=CHAR},
+      ayu_entrytime = #{ayuEntrytime,jdbcType=CHAR},
+      ayu_dimission = #{ayuDimission,jdbcType=CHAR},
+      ayu_slotcard = #{ayuSlotcard,jdbcType=CHAR},
+      ayu_mainclass = #{ayuMainclass,jdbcType=CHAR},
+      ayu_aydeid = #{ayuAydeid,jdbcType=INTEGER},
+      ayu_ayrid = #{ayuAyrid,jdbcType=INTEGER},
+      ayu_remark = #{ayuRemark,jdbcType=VARCHAR},
+      ayu_iccardnum = #{ayuIccardnum,jdbcType=VARCHAR},
+      ayu_plaintextpwd = #{ayuPlaintextpwd,jdbcType=VARCHAR},
+      ayu_ciphertextpwd = #{ayuCiphertextpwd,jdbcType=VARCHAR},
+      ayu_abandon = #{ayuAbandon,jdbcType=INTEGER},
+      ayu_updatetime = #{ayuUpdatetime,jdbcType=TIMESTAMP}
+    where ayu_id = #{ayuId,jdbcType=INTEGER}
+  </update>
+  <resultMap id="BaseResultMap" type="com.aoya.domain.AyUser">
+    <id column="ayu_id" jdbcType="INTEGER" property="ayuId" />
+    <result column="ayu_name" jdbcType="VARCHAR" property="ayuName" />
+    <result column="ayu_phone" jdbcType="VARCHAR" property="ayuPhone" />
+    <result column="ayu_update_time" jdbcType="TIMESTAMP" property="ayuUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ayu_id, ayu_name, ayu_phone, ayu_update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ay_user
+    where ayu_id = #{ayuId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ay_user
+    where ayu_id = #{ayuId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.aoya.domain.AyUser">
+    insert into ay_user (ayu_id, ayu_name, ayu_phone, 
+      ayu_update_time)
+    values (#{ayuId,jdbcType=INTEGER}, #{ayuName,jdbcType=VARCHAR}, #{ayuPhone,jdbcType=VARCHAR}, 
+      #{ayuUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aoya.domain.AyUser">
+    insert into ay_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ayuId != null">
+        ayu_id,
+      </if>
+      <if test="ayuName != null">
+        ayu_name,
+      </if>
+      <if test="ayuPhone != null">
+        ayu_phone,
+      </if>
+      <if test="ayuUpdateTime != null">
+        ayu_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ayuId != null">
+        #{ayuId,jdbcType=INTEGER},
+      </if>
+      <if test="ayuName != null">
+        #{ayuName,jdbcType=VARCHAR},
+      </if>
+      <if test="ayuPhone != null">
+        #{ayuPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="ayuUpdateTime != null">
+        #{ayuUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aoya.domain.AyUser">
+    update ay_user
+    <set>
+      <if test="ayuName != null">
+        ayu_name = #{ayuName,jdbcType=VARCHAR},
+      </if>
+      <if test="ayuPhone != null">
+        ayu_phone = #{ayuPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="ayuUpdateTime != null">
+        ayu_update_time = #{ayuUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ayu_id = #{ayuId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aoya.domain.AyUser">
+    update ay_user
+    set ayu_name = #{ayuName,jdbcType=VARCHAR},
+      ayu_phone = #{ayuPhone,jdbcType=VARCHAR},
+      ayu_update_time = #{ayuUpdateTime,jdbcType=TIMESTAMP}
+    where ayu_id = #{ayuId,jdbcType=INTEGER}
+  </update>
+</mapper>
