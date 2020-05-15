@@ -3,7 +3,6 @@ package com.aoya.mapper;
 import com.aoya.domain.AyCode;
 import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
 public interface AyCodeMapper {
     int deleteByPrimaryKey(Integer aycId);
 

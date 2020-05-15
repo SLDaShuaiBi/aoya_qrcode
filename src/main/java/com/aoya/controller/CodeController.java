@@ -9,6 +9,8 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,13 +31,16 @@ import java.util.Map;
  * @Date:2020-5-11 21:57
  */
 @RestController
+@EnableTransactionManagement
 public class CodeController {
     @Autowired
     AyCodeMapper ayCodeMapper;
 
     @PostMapping("/code/add/{name}")
+    @Transactional
     public Map<String, String> add(@PathVariable("name") String name, MultipartFile file, HttpServletRequest request) {
         Map<String, String> ret = new HashMap<String, String>();
+        String imgSavePath = "E:/images/upload/";
         if (file == null) {
             ret.put("type", "error");
             ret.put("msg", "选择要上传的文件！");
@@ -50,6 +55,7 @@ public class CodeController {
         ayCode.setAycName(name);
         ayCode.setAycUpdateTime(new Date());
         int i = ayCodeMapper.insertSelective(ayCode);
+        Integer id = ayCode.getAycId();
         //获取文件后缀
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1, file.getOriginalFilename().length());
         if (!"jpg,jpeg,gif,png".toUpperCase().contains(suffix.toUpperCase())) {
@@ -58,33 +64,35 @@ public class CodeController {
             return ret;
         }
         //获取项目根目录加上图片目录 webapp/static/imgages/upload/
-        String savePath = "D:\\images\\upload/" + i + "/";
-        File savePathFile = new File(savePath);
+        String orgImgSavePath = imgSavePath + id;
+        File savePathFile = new File(orgImgSavePath);
         if (!savePathFile.exists()) {
             //若不存在该目录，则创建目录
             savePathFile.mkdir();
         }
         String filename = new Date().getTime() + "." + suffix;
+        orgImgSavePath = orgImgSavePath + "/" + filename;
+        String codeImgSavePath = imgSavePath + id + "/" + "code" + filename;
         try {
             //将文件保存指定目录
-            file.transferTo(new File(savePath + filename));
+            file.transferTo(new File(orgImgSavePath));
         } catch (Exception e) {
             ret.put("type", "error");
             ret.put("msg", "保存文件异常！");
             e.printStackTrace();
             return ret;
         }
-
-
-
-        if (this.orCode("http://127.0.0.1:8888", savePath + "code" + filename)) {
+        ayCode.setAycImgUrl(orgImgSavePath);
+        ayCode.setAycCodeUrl(codeImgSavePath);
+        ayCodeMapper.updateByPrimaryKeySelective(ayCode);
+        if (this.orCode("http://192.168.8.23:8888/code.html?id=" + id, codeImgSavePath)) {
             System.out.println("ok,成功");
         } else {
             System.out.println("no,失败");
         }
         ret.put("type", "success");
         ret.put("msg", "上传图片成功！");
-        ret.put("filepath", savePath);
+        ret.put("filepath", orgImgSavePath);
         ret.put("filename", filename);
         return ret;
     }
@@ -124,4 +132,14 @@ public class CodeController {
         }
     }
 
+    public static void main(String[] args) {
+        File savePathFile = new File("F:\\aoya");
+        if (!savePathFile.exists()) {
+            savePathFile.mkdir();
+            System.out.println("创建文件夹");
+        } else {
+            System.out.println("baibai");
+        }
+
+    }
 }

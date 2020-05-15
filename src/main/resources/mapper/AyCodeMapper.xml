@@ -27,7 +27,7 @@
     values (#{aycId,jdbcType=INTEGER}, #{aycName,jdbcType=VARCHAR}, #{aycImgUrl,jdbcType=VARCHAR}, 
       #{aycCodeUrl,jdbcType=VARCHAR}, #{aycUpdateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.aoya.domain.AyCode" >
+  <insert id="insertSelective" parameterType="com.aoya.domain.AyCode" useGeneratedKeys="true" keyProperty="aycId">
     insert into ay_code
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="aycId != null" >
