@@ -10,6 +10,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -154,11 +155,30 @@ public class CodeController {
     }
 
     @GetMapping("/code/downImg/{id}/{img}")
-    public void downImg(HttpServletResponse response, @PathVariable("id") int id, @PathVariable("img") String img) {
+    public void downImg(HttpServletResponse response, @PathVariable("id") int id, @PathVariable("img") String img) throws IOException {
 
+        OutputStream stream = response.getOutputStream();
+        try {
+            response.reset();
+            //设置响应头，把文件名字设置好
+            response.setHeader("Content-Disposition", "attachment; filename=" + img);
+            //解决编码问题
+            response.setContentType("application/octet-stream; charset=utf-8");
+            //创建存储的文件对象（文件存储的路径和文件名字）
+            File targetFile = new File(imgSavePath + id + "/", img);
+            //输出流开始写出文件（FileUtils是Apache下的工具类可以直接调用）
+            stream.write(FileUtils.readFileToByteArray(targetFile));
+            //刷新流
+            stream.flush();
+        } catch (Exception e) {
+
+        } finally {
+            //关闭流
+            stream.close();
+        }
 
         ///////////
-        System.out.println(id + img);
+     /*   System.out.println(id + img);
         System.out.println(System.currentTimeMillis());
         try {
             String filename = img;
@@ -179,7 +199,7 @@ public class CodeController {
             fileInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 

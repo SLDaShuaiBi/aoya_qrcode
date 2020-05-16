@@ -3,8 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>code</title>
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
-111
+
+<script>
+    function myfun() 　　{
+        var kouling = prompt("手机号");
+        alert()
+    }
+    /*用window.onload调用myfun()*/
+
+    // 不要括号
+    window.onload = myfun;
+</script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: function() {
+            return { visible: false }
+        }
+    })
+</script>
 </body>
 </html>
