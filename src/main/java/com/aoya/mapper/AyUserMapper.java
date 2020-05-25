@@ -2,6 +2,7 @@ package com.aoya.mapper;
 
 import com.aoya.domain.AyCode;
 import com.aoya.domain.AyUser;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.Map;
 

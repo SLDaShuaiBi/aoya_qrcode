@@ -97,7 +97,7 @@ public class CodeController {
             e.printStackTrace();
             return ret;
         }
-        ayCode.setAycImgUrl(orgImgSavePath);
+        ayCode.setAycImgUrl(viewPath + id + "/" + filename);
         ayCode.setAycCodeUrl(codeImgSavePath);
         ayCodeMapper.updateByPrimaryKeySelective(ayCode);
         if (this.orCode("http://192.168.8.23:8888/code.html?id=" + id, codeImgSavePath)) {
@@ -203,5 +203,8 @@ public class CodeController {
 
     }
 
-
+    @PostMapping("/code/queryCode/{id}/{phone}")
+    public Result queryCode(@PathVariable("id") Integer id, @PathVariable("phone") String phone) {
+        return userService.queryCode(id, phone);
+    }
 }

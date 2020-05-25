@@ -13,7 +13,7 @@ public class WebMVCConfig  implements WebMvcConfigurer {
     private String uploadFolder;
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(staticAccessPath).addResourceLocations("file:/" + uploadFolder);
+        registry.addResourceHandler(staticAccessPath).addResourceLocations("file:" + uploadFolder);
         WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 }

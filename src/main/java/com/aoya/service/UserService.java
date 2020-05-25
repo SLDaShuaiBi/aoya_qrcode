@@ -55,4 +55,15 @@ public class UserService {
         }
         return result;
     }
+
+    public Result queryCode(Integer id, String phone) {
+        Result result = new Result();
+        if (userMapper.selectUserByPhone(phone) <= 0) {
+            result.setMsg("没有权限无法查看");
+            return result;
+        }
+        AyCode code = codeMapper.selectByPrimaryKey(id);
+        result.addElement("codeUrl", code.getAycImgUrl());
+        return result.changeSuccess();
+    }
 }
