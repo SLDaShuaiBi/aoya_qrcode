@@ -10,47 +10,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="layui/css/layui.css" media="all">
     <style>
-        body{margin: 10px;}
-        .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
-    </style>
-</head>
-<body>
-
-<h1 align="center">生成二维码 </h1>
-<table>
-    <tr>
-        <td>工艺单单名</td>
-        <td><input type="text" name="name" id="name"></td>
-    </tr>
-    <tr>
-        <td>工艺单图片</td>
-        <td><input type="file" name="file" id="fileId" accept="image/*" onchange="showImg(this)"></td>
-    </tr>
-    <tr>
-        <td>
-            <button onclick="add()">添加</button>
-        </td>
-    </tr>
-    <div class="layui-upload">
-        <button type="button" class="layui-btn" id="test1">上传图片</button>
-        <div class="layui-upload-list">
-            <img class="layui-upload-img" id="demo1">
-            <p id="demoText"></p>
-        </div>
-    </div>
-    <div id="addUrl">
-        <img src="" alt="" id="img" width="200px" height="200px">
-        <img id="preview_photo" src="" width="200px" height="200px">
-    </div>
-    <style>
         img[src=""], img:not([src]) {
             opacity: 0;
         }
-    </style>
-</table>
+        .container{
+            margin: 0 auto;
+            width: 1200px;
+            height: 100vh;
+            background: #eee;
+        }
+        .submit{
+            display: flex;
+            flex-direction: column;
+            padding: 60px 60px;
+        }
+        .sbmit_item{
+            display: flex;
+            height: 100px;
+        }
+        .item_name{
+            margin-right:5%;
+            width: 20%;
+            text-align: right;
 
+        }
+        .item_info{
+            width:65%;
+            text-align: left;
+        }
+        .showImg,.qrCode{
+            height: 240px;
+        }
+        .tiptext,.tiptext:hover{
+            color:#1E9FFF;
+            font-size: 18px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 style="text-align: center">生成二维码 </h1>
+    <div class="submit">
+        <div class="sbmit_item">
+            <div class="item_name">工艺单单名</div>
+            <div class="item_info"><input type="text" name="name" id="name"></div>
+        </div>
+        <div class="sbmit_item showImg">
+            <div class="item_name">工艺单图片</div>
+            <div class="item_info">
+                <input type="file" name="file" id="fileId" accept="image/*" onchange="showImg(this)">
+                <img src="" alt="" id="img" width="200px" height="200px">
+            </div>
+        </div>
+        <div class="sbmit_item qrCode">
+            <div class="item_name">
+                <button onclick="add()">生成二维码</button>
+            </div>
+            <div class="item_info">
+                <img id="preview_photo" src="" width="200px" height="200px">
+            </div>
+        </div>
+        <div class="sbmit_item">
+            <div class="item_name"></div>
+            <div class="item_info addTip"></div>
+        </div>
+    </div>
+</div>
 
 <script>
+    $("#img").hide()
     function showImg(obj) {
         var file = $(obj)[0].files[0];    //获取文件信息
         var imgdata = '';
@@ -59,6 +88,8 @@
             reader.readAsDataURL(file); //将文件读取为 DataURL(base64)
             reader.onload = function (evt) {   //读取操作完成时触发。
                 $("#img").attr('src', evt.target.result)  //将img标签的src绑定为DataURL
+                $("#fileId").hide()
+                $("#img").show()
             };
         } else {
             alert("上传失败");
@@ -66,30 +97,35 @@
     }
 
     function add() {
-        if ($("#name").val() == '' || $("#name").val() == null) {
-            alert("工艺单单名不能为空")
-            return;
-        }
-        if ($("#fileId").val() == '' || $("#fileId").val() == null) {
-            alert("图片不能为空")
-            return;
-        }
-        var formData = new FormData();
-        formData.append('file', $('#fileId')[0].files[0]);  //添加图片信息的参数
-        formData.append("name", $("#name").val());
-        $.ajax({
-            url: "../code/add/" + $("#name").val(),
-            type: "post",
-            dataType: "json",
-            cache: false,
-            data: formData,
-            processData: false,// 不处理数据
-            contentType: false, // 不设置内容类型
-            success: function (data) {
-                $("#preview_photo").attr("src", data.filepath);
-                $("#addUrl").append("<a href='../code/downImg/"+data.id+ "/code"+ data.filename+ " '>将二维码保存本地</a>")
+        if(!$(".addTip").html()){
+            if ($("#name").val() == '' || $("#name").val() == null) {
+                alert("工艺单单名不能为空")
+                return;
             }
-        })
+            if ($("#fileId").val() == '' || $("#fileId").val() == null) {
+                alert("图片不能为空")
+                return;
+            }
+            var formData = new FormData();
+            formData.append('file', $('#fileId')[0].files[0]);  //添加图片信息的参数
+            formData.append("name", $("#name").val());
+            $.ajax({
+                url: "../code/add/" + $("#name").val(),
+                type: "post",
+                dataType: "json",
+                cache: false,
+                data: formData,
+                processData: false,// 不处理数据
+                contentType: false, // 不设置内容类型
+                success: function (data) {
+                    $("#preview_photo").attr("src", data.filepath);
+                    $(".addTip").html("<a class='tiptext' href='../code/downImg/"+data.id+ "/code"+ data.filename+ " '>将二维码保存本地</a>")
+                }
+            })
+        }else{
+            alert("操作成功")
+        }
+
     }
 </script>
 </body>
