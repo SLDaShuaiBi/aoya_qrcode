@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -64,6 +65,24 @@ public class UserService {
         }
         AyCode code = codeMapper.selectByPrimaryKey(id);
         result.addElement("codeUrl", code.getAycImgUrl());
+        return result.changeSuccess();
+    }
+
+    public Result userList() {
+        Result result = new Result();
+        List<Map<String, Object>> list = userMapper.userList();
+        result.addElement("list", list);
+        return result.changeSuccess();
+    }
+
+    public Result addUser(AyUser user) {
+        Result result = new Result();
+        if (user.getAyuId() == null) {
+            user.setAyuUpdateTime(new Date());
+            userMapper.insertSelective(user);
+        } else {
+            userMapper.updateByPrimaryKeySelective(user);
+        }
         return result.changeSuccess();
     }
 }

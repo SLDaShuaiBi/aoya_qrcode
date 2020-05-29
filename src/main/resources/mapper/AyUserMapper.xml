@@ -80,4 +80,7 @@
   <select id="selectUserByPhone" parameterType="java.lang.String" resultType="java.lang.Integer">
     select count(*) from ay_user where ayu_phone = #{phone}
   </select>
+  <select id="userList" resultType="java.util.Map">
+    select ayu_id, ayu_name, ayu_phone, DATE_FORMAT(ayu_update_time,'%Y-%m-%d %H:%i:%s') ayu_update_time from ay_user
+  </select>
 </mapper>
